@@ -26,6 +26,7 @@ public class redisTest {
         UserService userService = new UserServiceImpl();
         List<User> allUser = userService.getAllUser();
         System.out.println(allUser);
+        System.out.println(123123132);
     }
 
 
