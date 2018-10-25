@@ -23,11 +23,12 @@ public class redisTest {
 
     @Test
     public void test(){
+//        hah
         UserService userService = new UserServiceImpl();
         List<User> allUser = userService.getAllUser();
         System.out.println(allUser);
         System.out.println(123123132);
-        System.out.println("哈哈哈哈");
+        System.out.println("哈哈哈哈3232");
         System.out.println("papapaapappapapapapaap");
     }
 
