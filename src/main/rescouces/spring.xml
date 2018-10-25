@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--自动扫描com.zking包下所有类的注解-->
+    <context:component-scan base-package="com.zking"></context:component-scan>
+
+    <!--引入外部资源-->
+    <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
+
+    <!--配置数据源：C3P0-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${driver_Class}"></property>
+        <property name="jdbcUrl" value="${url}"></property>
+        <property name="user" value="${uname}"></property>
+        <property name="password" value="${upwd}"></property>
+        <property name="initialPoolSize" value="${initialPoolSizes}"></property>
+        <property name="maxPoolSize" value="${maxPoolSizes}"></property>
+    </bean>
+
+    <!--配置SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--引入数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+        <!--加载所有mapper下的映射文件-->
+        <property name="mapperLocations" value="classpath:com/zking/mapper/*.xml"></property>
+        <!--加载mybatisconfig.xml文件-->
+        <property name="configLocation" value="classpath:mybatisconfig.xml"></property>
+        <!--typeAliasesPackage对应实体类所在的包，这个时候会自动取类名作为别名-->
+        <property name="typeAliasesPackage" value="com.zking.pojo"></property>
+    </bean>
+
+    <!--配置Dao层：spring注入这个bean-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+          <!--将sqlsessionFactory注入到dao包下面所有的类，在这些类中可以直接使用selsessionFactory-->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="basePackage" value="com.zking.dao"></property>
+    </bean>
+
+    <!--事物管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+
+    <!--redis配置-->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.227.128"></constructor-arg>
+        <constructor-arg name="port" value="6379"></constructor-arg>
+    </bean>
+
+    <!--配置redisCache类-->
+    <bean id="redisCache" class="com.zking.redis.RedisCache">
+        <property name="jedisPool" ref="jedisPool"></property>
+    </bean>
+
+
+</beans>

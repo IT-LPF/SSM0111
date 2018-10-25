@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zking.dao.CardDao">
+
+    <!--根据身份证id获得-->
+    <select id="selectCardById" parameterType="int" resultType="Card">
+        SELECT C_ID,CODE FROM TB_CARD WHERE  C_ID=#{c_id};
+    </select>
+
+</mapper>
