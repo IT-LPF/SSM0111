@@ -28,6 +28,7 @@ public class redisTest {
         System.out.println(allUser);
         System.out.println(123123132);
         System.out.println("哈哈哈哈");
+        System.out.println("papapaapappapapapapaap");
     }
 
 
